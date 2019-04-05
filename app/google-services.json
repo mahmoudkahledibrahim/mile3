@@ -21,10 +21,6 @@
             "package_name": "com.example.myapp",
             "certificate_hash": "0858e0437acbbc316ed396fc81047501fc25e68b"
           }
-        },
-        {
-          "client_id": "322836688687-hsdveqvrnv4q4ar7je46mn6rm8bfp834.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -33,20 +29,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "322836688687-hsdveqvrnv4q4ar7je46mn6rm8bfp834.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

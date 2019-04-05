@@ -25,6 +25,7 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
     TextView textStatus;
     Button buttonScan;
     int size = 0;
+    String SS,MACAD;
     List<ScanResult> results;
     String ITEM_KEY = "key";
     ArrayList<HashMap<String, String>> arraylist = new ArrayList<HashMap<String, String>>();
@@ -43,7 +44,10 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(WiFiDemo.this, Signout.class));
+                Intent intent = new Intent(WiFiDemo.this, Signout.class);
+                intent.putExtra("SSID",SS);
+                intent.putExtra("MACAD",MACAD);
+                startActivity(intent);
                 finish();
             }
         });
@@ -66,7 +70,7 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void onClick(View view){
-//        if(view == buttonScan){
+      if(view == buttonScan){
         arraylist.clear();
         wifi.startScan();
         List<ScanResult> results = wifi.getScanResults();
@@ -82,6 +86,8 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
                  if(temp.equalsIgnoreCase("esp")) {
                     HashMap<String, String> item = new HashMap<String, String>();
                     item.put(ITEM_KEY, "SSID : " + results.get(size).SSID + "\n" + " MAC : " + mac);
+                    SS=results.get(size).SSID;
+                    MACAD=mac;
                     arraylist.add(item);
                     size--;
                     adapter.notifyDataSetChanged();
@@ -92,6 +98,6 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
         }
         catch (Exception e)
         { }
-//      }
+    }
     }
 }
