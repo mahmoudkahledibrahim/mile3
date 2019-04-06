@@ -82,14 +82,14 @@ public class WiFiDemo extends AppCompatActivity implements View.OnClickListener 
             size = size - 1;
             while (size >= 0) {
                 String temp =results.get(size).SSID.substring(0,3);
-                String mac =wifi.getConnectionInfo().getMacAddress();
+                // String mac =wifi.getConnectionInfo().getMacAddress();
                  if(temp.equalsIgnoreCase("esp")) {
                     HashMap<String, String> item = new HashMap<String, String>();
-                    item.put(ITEM_KEY, "SSID : " + results.get(size).SSID + "\n" + " MAC : " + mac);
-                    SS=results.get(size).SSID;
-                    MACAD=mac;
-                    arraylist.add(item);
-                    size--;
+                     SS=results.get(size).SSID.toUpperCase();
+                     MACAD =results.get(size).BSSID.toUpperCase();
+                     item.put(ITEM_KEY, "SSID : " + results.get(size).SSID + "\n" + " MAC : " + MACAD);
+                     arraylist.add(item);
+                     size--;
                     adapter.notifyDataSetChanged();
                }
                else

@@ -1,6 +1,7 @@
 package com.example.myapp;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -17,30 +18,48 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class Signout extends AppCompatActivity implements View.OnClickListener {
       private DatabaseReference myRef ;
-      Button signout,temp;
-      TextView detail;
+      Button signout;
+      TextView detail,temp;
+      FirebaseDatabase firebaseDatabase;
       public static final String TAG="ViewDatabase";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signout);
         signout=(Button)findViewById(R.id.btnsignout);
-        temp=(Button)findViewById(R.id.btntemp);
         detail=(TextView)findViewById(R.id.txtDetail);
+        temp=(TextView)findViewById(R.id.txttemp);
         signout.setOnClickListener(this);
-        temp.setOnClickListener(this);
         Intent intent = getIntent();
         String SS = intent.getStringExtra("SSID");
+        SS.toUpperCase();
         String MACAD = intent.getStringExtra("MACAD");
+        MACAD.toUpperCase();
         detail.setText("SSID : " + SS + "\n" + "MAC : " + MACAD);
-        detail.setMovementMethod(new ScrollingMovementMethod());
-        detail.setTextSize(12);
+        detail.setTextSize(14);
+        temp.setVerticalScrollBarEnabled(true);
+        temp.setScroller(new Scroller(this));
+        temp.setTextSize(14);
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        myRef=firebaseDatabase.getReference().child(MACAD);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot x : dataSnapshot.getChildren()) {
+                    String value = x.getValue(String.class);
+                    temp.setText(value);
 
-
-
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                temp.setText("ERROR FOUND");
+            }
+        });
     }
-
     @Override
     public void onClick(View v) {
         if(v==signout){
@@ -48,20 +67,5 @@ public class Signout extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
             finish();
         }
-        if(v==temp){
-            myRef=FirebaseDatabase.getInstance().getReference().child("60:01:94:74:46:3A");
-
-        }myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class).toString();
-                detail.setText(value);
-                //detail.append("\n");
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
     }
 }
